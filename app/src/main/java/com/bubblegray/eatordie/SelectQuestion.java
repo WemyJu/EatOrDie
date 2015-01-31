@@ -1,17 +1,68 @@
 package com.bubblegray.eatordie;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 
 public class SelectQuestion extends ActionBarActivity {
+    //View mContentView;
+    View mLoadingView;
+    int mLongDurationAnimation;
+    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_question);
+
+        mTextView = (TextView) findViewById(R.id.textView11);
+
+        new CountDownTimer(5000,1000){
+            @Override
+            public void onFinish() {
+                // TODO Auto-generated method stub
+                mTextView.setText("0");
+            }
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO Auto-generated method stub
+                mTextView.setText(""+millisUntilFinished/1000);
+            }
+
+        }.start();
+    }
+
+    void crossfade(){
+        mLoadingView.animate()
+                .alpha(0f)
+                .setDuration(mLongDurationAnimation)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mLoadingView.setVisibility(View.GONE);
+                    }
+                });
     }
 
 
@@ -60,7 +111,7 @@ public class SelectQuestion extends ActionBarActivity {
 	public int TwoChooseOne(){
 		int id=0;
 		//random out a number that hasn't visit
-		while(id=RanNum()!=0 && !visited[id]){}
+		while((id=RanNum())!=0 && !visited[id]){}
 		visited[id]=false;
 		if(id%2==1)
 		    visited[id+1]=true;

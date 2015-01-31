@@ -20,6 +20,10 @@
             android:name=".SelectQuestion"
             android:label="@string/title_activity_select_question" >
         </activity>
+        <activity
+            android:name=".ResultList"
+            android:label="@string/title_activity_result_list" >
+        </activity>
     </application>
 
 </manifest>
