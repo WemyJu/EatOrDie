@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 public class ResultList extends ActionBarActivity {
 
-    private String location = "";
+    private String location = "25.043800,121.557223";
     private String radius = "500";
     private String type = "food";
     private String key = "AIzaSyBbgk2WwE9CC8JIHlJ4_NtLXOTIu7foOVE";
