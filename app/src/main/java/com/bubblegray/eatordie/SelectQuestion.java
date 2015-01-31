@@ -98,10 +98,16 @@ public class SelectQuestion extends ActionBarActivity{
         if (i >= numOfQuestions) {
             Collections.sort(decisions);
             Intent it = new Intent(this, ResultList.class);
-            for(int j=0; j<numOfQuestions; j++) {
-                it.putExtra(j+"", foodType[decisions.get(j)]);
+            int numOfKeyWord = decisions.size();
+            for(int j=0; j<decisions.size(); j++) {
+                if(j>=1 && j<=6){
+                    numOfKeyWord--;
+                }
+                else {
+                    it.putExtra(j + "", foodType[decisions.get(j)]);
+                }
             }
-            it.putExtra("numOfQuestions", decisions.size());
+            it.putExtra("numOfKeyWord", numOfKeyWord);
             startActivity(it);
         } else {
             int id = TwoChooseOne();
@@ -159,7 +165,7 @@ public class SelectQuestion extends ActionBarActivity{
     public void decided(View v){
         i++;
         CDT.cancel();
-        decisions.add(Arrays.asList(foodType).indexOf((String)((TextView) v).getText()));
+        decisions.add(Arrays.asList(foodType).indexOf((String) ((TextView) v).getText()));
         getQuestionAndSetUI();
     }
 }

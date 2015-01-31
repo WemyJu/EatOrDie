@@ -72,16 +72,16 @@ public class ResultList extends ActionBarActivity {
 //        Thread getDataThread = new Thread(getData);
 //        getDataThread.start();
 //        myself=this;
-        Intent it =getIntent();
-        int numOfQuestions=it.getIntExtra("numOfQuestions",0);
-        if(numOfQuestions==0)
+        Intent it = getIntent();
+        int numOfKeyWord = it.getIntExtra("numOfKeyWord",0);
+        if(numOfKeyWord == 0)
         {
             Intent it2=new Intent(this,Die.class);
             startActivity(it2);
         }
         else
         {
-            for(int i=0;i<numOfQuestions;++i)
+            for(int i=0; i<numOfKeyWord; ++i)
             {
                 keyWord+=i==0?it.getStringExtra(""+i):","+it.getStringExtra(""+i);
             }
