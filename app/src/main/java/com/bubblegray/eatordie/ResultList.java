@@ -39,11 +39,11 @@ import java.util.ArrayList;
 
 public class ResultList extends ActionBarActivity {
 
-    private String location = "24.790864,121.004105";
+    private String location = "";
     private String radius = "500";
     private String type = "food";
     private String key = "AIzaSyBbgk2WwE9CC8JIHlJ4_NtLXOTIu7foOVE";
-    private String keyWord="漢堡";
+    private String keyWord="";
     //private String nextPage="";
     private String url;
     //private boolean isOver;
@@ -72,6 +72,29 @@ public class ResultList extends ActionBarActivity {
 //        Thread getDataThread = new Thread(getData);
 //        getDataThread.start();
 //        myself=this;
+        Intent it =getIntent();
+        int numOfQuestions=it.getIntExtra("numOfQuestions",0);
+        if(numOfQuestions==0)
+        {
+            Intent it2=new Intent(this,Die.class);
+            startActivity(it2);
+        }
+        else
+        {
+            for(int i=0;i<numOfQuestions;++i)
+            {
+                keyWord+=i==0?it.getStringExtra(""+i):","+it.getStringExtra(""+i);
+            }
+        }
+
+        LocationManager locmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        String provider = locmgr.getBestProvider(new Criteria(), true);
+        if(provider != null) {
+            Location l_net = locmgr.getLastKnownLocation(provider);
+            location = String.format("%.6f,%.6f", l_net.getLatitude(), l_net.getLongitude());
+            Log.e("position", location);
+        }
+
         arrayList = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(ResultList.this,android.R.layout.simple_list_item_1,arrayList);
         listView.setAdapter(listAdapter);
