@@ -14,6 +14,11 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -30,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.Object;
+import java.util.ArrayList;
 
 public class ResultList extends ActionBarActivity {
 
@@ -37,7 +43,10 @@ public class ResultList extends ActionBarActivity {
     private String radius = "500";
     private String type = "food";
     private String key = "AIzaSyBbgk2WwE9CC8JIHlJ4_NtLXOTIu7foOVE";
-    private String url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key;
+    private String keyWord="漢堡";
+    //private String nextPage="";
+    private String url;
+    //private boolean isOver;
     private Handler UIHr;
     private GetData getData;
     private ListView listView;
@@ -45,38 +54,72 @@ public class ResultList extends ActionBarActivity {
     private ArrayAdapter<String> listAdapter;
     private ResultList myself;
 
+    private ArrayList<String> arrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_list);
 
+        //get keyword
+        //set keyWord variable
+        url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key/*+"&keyword="+keyWord*/;
+
         listView=(ListView)findViewById(R.id.listView);
+        //isOver=false;
+//        UIHr = new Handler();
+//        getData = new GetData();
+//        Thread getDataThread = new Thread(getData);
+//        getDataThread.start();
+//        myself=this;
+        arrayList = new ArrayList<String>();
+        listAdapter = new ArrayAdapter<String>(ResultList.this,android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(listAdapter);
 
-        UIHr = new Handler();
-        getData = new GetData();
-        Thread getDataThread = new Thread(getData);
-        getDataThread.start();
-        myself=this;
+        loadAPI(url);
+    }
+    public void loadAPI(String address)
+    {
+        Log.d("Eat or die","Address: " + address);
+        Ion.with(ResultList.this)
+                .load(address)
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Log.d("API Test", "Test Result" + result.toString());
+                        String nextPage="";
+                        boolean isOver=false;
+                        if(result.has("next_page_token"))
+                        {
+                            nextPage=result.get("next_page_token").getAsString();
+                            isOver=false;
+                        }
+                        else
+                        {
+                            isOver=true;
+                        }
+                        JsonArray tmp = result.getAsJsonArray("results");
 
-        Intent it = getIntent();
-        int numOfQuestions = it.getIntExtra("numOfQuestions", 0);
-        if(numOfQuestions == 0){
-            Intent it2 = new Intent(this, Die.class);
-            startActivity(it2);
-        }
-        else {
-            for (int i = 0; i < numOfQuestions; i++) {
-                type += "&" + it.getStringExtra("" + i);
-            }
-        }
+                        if(tmp!=null) {
+                            int len;
+                            len = tmp.size();
+                            for (int i = 0; i < len; ++i) {
+                                arrayList.add(tmp.get(i).getAsJsonObject().get("name").getAsString());
+                            }
 
-        LocationManager locmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        String provider = locmgr.getBestProvider(new Criteria(), true);
-        if(provider != null) {
-            Location l_net = locmgr.getLastKnownLocation(provider);
-            location = String.format("%.6f,%.6f", l_net.getLatitude(), l_net.getLongitude());
-            Log.e("position", location);
-        }
+
+                        }
+                        if(!isOver)
+                        {
+                            url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key/*+"&keyword="+keyWord*/+"&pagetoken="+nextPage;
+                            loadAPI(url);
+                        }
+                        else
+                            // UIHr.post(refreshUI);
+                            listAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     public Runnable refreshUI = new Runnable() {
@@ -90,22 +133,41 @@ public class ResultList extends ActionBarActivity {
 
         private String[] result;
         private int len;
+
+
+
         @Override
         public void run() {
-            String jsonString = getJSON(url);
-            JSONArray tmp = parseJSON(jsonString);
-            try {
-                len=tmp.length();
-                result=new String[len];
-                for(int i=0;i<len;++i)
-                {
-                    result[i] = tmp.getJSONObject(i).getString("name");
+
+            arrayList=new ArrayList<String>();
+            loadAPI(url);
+/*
+            while(!isOver) {
+                Log.v("Debug",url);
+                //String jsonString = getJSON(url);
+
+                JSONArray tmp = parseJSON(jsonString);
+                if(tmp==null)   break;
+                try {
+                    len = tmp.length();
+                    for (int i = 0; i < len; ++i) {
+                        arrayList.add(tmp.getJSONObject(i).getString("name"));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if(!"".equals(nextPage))
+                    url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key/*+"&keyword="+keyWord*//*+"&pagetoken="+nextPage;
+
             }
+            len=arrayList.size();
+            result = new String[len];
+            for(int i=0;i<len;++i)
+                result[i]=arrayList.get(i);
             UIHr.post(refreshUI);
+  */
         }
 
         public String[] getResult() {
@@ -128,7 +190,7 @@ public class ResultList extends ActionBarActivity {
                     while ((line = reader.readLine()) != null) {
                         builder.append(line);
                     }
-                    content.close();
+                    //content.close();
                 }
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
@@ -173,12 +235,20 @@ public class ResultList extends ActionBarActivity {
          * @param jsonString the json stgring from api
          * @return
          */
-        private JSONArray parseJSON(String jsonString) {
+  /*      private JSONArray parseJSON(String jsonString) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
                 String status = jsonObject.getString("status");
+                Log.v("Debug",jsonString);
                 if (!"OK".equals(status)) {
                     throw new IllegalStateException();
+                }
+
+                if(jsonObject.has("next_page_token"))
+                    nextPage=jsonObject.getString("next_page_token");
+                else {
+                    isOver = true;
+                    nextPage="";
                 }
                 JSONArray results = jsonObject.getJSONArray("results");
 
@@ -187,7 +257,7 @@ public class ResultList extends ActionBarActivity {
                 e.printStackTrace();
             }
             return null;
-        }
+        }*/
     }
 
     @Override
