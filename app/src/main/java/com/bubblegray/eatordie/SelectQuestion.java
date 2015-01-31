@@ -69,10 +69,7 @@ public class SelectQuestion extends ActionBarActivity{
         });
         Arrays.fill(visited, Boolean.TRUE);
         setup();
-        //for(i=0; i<5; i++) {
-            getQuestionAndSetUI();
-            Log.e("on creat", "in loop:"+i);
-        //}
+        getQuestionAndSetUI();
     }
 
     @Override
@@ -98,19 +95,19 @@ public class SelectQuestion extends ActionBarActivity{
     }
 
     void getQuestionAndSetUI() {
-        int id = TwoChooseOne();
-        choice1.setText(foodType[id]);
-        choice2.setText(foodType[id + 1]);
-
         if (i >= numOfQuestions) {
             Collections.sort(decisions);
             Intent it = new Intent(this, ResultList.class);
             for(int j=0; j<numOfQuestions; j++) {
                 it.putExtra(j+"", foodType[decisions.get(j)]);
             }
-            it.putExtra("numOfQuestions", numOfQuestions);
+            it.putExtra("numOfQuestions", decisions.size());
             startActivity(it);
         } else {
+            int id = TwoChooseOne();
+            choice1.setText(foodType[id]);
+            choice2.setText(foodType[id + 1]);
+
             CDT = new CountDownTimer(5000, 500) {
                 @Override
                 public void onFinish() {
@@ -164,6 +161,5 @@ public class SelectQuestion extends ActionBarActivity{
         CDT.cancel();
         decisions.add(Arrays.asList(foodType).indexOf((String)((TextView) v).getText()));
         getQuestionAndSetUI();
-        Log.e("in decide", "click");
     }
 }

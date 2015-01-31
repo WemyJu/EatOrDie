@@ -1,19 +1,44 @@
 package com.bubblegray.eatordie;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class Die extends ActionBarActivity {
+    TextView choice3, choice4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_die);
-    }
 
+        final Context myContext = this;
+        choice3 = (TextView) findViewById(R.id.choice3);
+        choice3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(Intent.ACTION_MAIN);
+                it.addCategory(Intent.CATEGORY_HOME);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(it);
+            }
+        });
+        choice4 = (TextView) findViewById(R.id.choice4);
+        choice4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(myContext, SelectQuestion.class);
+                startActivity(it);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,5 +60,14 @@ public class Die extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

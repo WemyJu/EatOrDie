@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_select_question">SelectQuestion</string>
     <string name="title_activity_result_list">ResultList</string>
+    <string name="title_activity_die">Die</string>
 
 </resources>

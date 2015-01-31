@@ -1,6 +1,10 @@
 package com.bubblegray.eatordie;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -56,8 +60,22 @@ public class ResultList extends ActionBarActivity {
 
         Intent it = getIntent();
         int numOfQuestions = it.getIntExtra("numOfQuestions", 0);
-        for(int i=0; i<numOfQuestions; i++){
-            type+="&"+it.getStringExtra(""+i);
+        if(numOfQuestions == 0){
+            Intent it2 = new Intent(this, Die.class);
+            startActivity(it2);
+        }
+        else {
+            for (int i = 0; i < numOfQuestions; i++) {
+                type += "&" + it.getStringExtra("" + i);
+            }
+        }
+
+        LocationManager locmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        String provider = locmgr.getBestProvider(new Criteria(), true);
+        if(provider != null) {
+            Location l_net = locmgr.getLastKnownLocation(provider);
+            location = String.format("%.6f,%.6f", l_net.getLatitude(), l_net.getLongitude());
+            Log.e("position", location);
         }
     }
 
