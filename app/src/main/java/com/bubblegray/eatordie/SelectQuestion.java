@@ -34,17 +34,18 @@ import java.util.Random;
 
 public class SelectQuestion extends ActionBarActivity{
     private TextView mTextView, choice1, choice2;
-    int i;
-    ArrayList<Integer> decisions = new ArrayList<Integer>();
-    static String[] foodType={
+    private int i;
+    private ArrayList<Integer> decisions = new ArrayList<Integer>();
+    private static boolean visited[]= new boolean[40];
+    private CountDownTimer CDT;
+    private static final String[] foodType={
             "start","正餐","小點心","餓死了","有點飽","下午茶","宵夜"
             ,"甜的","鹹的","米飯","麵食","餃類","關東煮"
             ,"重鹹","清淡","中式","西式","日式","泰式"
             ,"冷的","熱的","平價","高檔","速食","定食"
             ,"肉類","蔬菜","牛肉","豬肉","雞肉","鴨肉","鵝肉","魚肉"
     };
-    static boolean visited[]= new boolean[40];
-    CountDownTimer CDT;
+    private final int numOfQuestions = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,12 +102,13 @@ public class SelectQuestion extends ActionBarActivity{
         choice1.setText(foodType[id]);
         choice2.setText(foodType[id + 1]);
 
-        if (i >= 5) {
+        if (i >= numOfQuestions) {
             Collections.sort(decisions);
             Intent it = new Intent(this, ResultList.class);
-            for(int j=0; j<5; j++) {
+            for(int j=0; j<numOfQuestions; j++) {
                 it.putExtra(j+"", foodType[decisions.get(j)]);
             }
+            it.putExtra("numOfQuestions", numOfQuestions);
             startActivity(it);
         } else {
             CDT = new CountDownTimer(5000, 500) {

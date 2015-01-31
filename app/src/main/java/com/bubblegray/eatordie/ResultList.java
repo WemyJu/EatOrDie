@@ -55,7 +55,8 @@ public class ResultList extends ActionBarActivity {
         myself=this;
 
         Intent it = getIntent();
-        for(int i=0; i<5; i++){
+        int numOfQuestions = it.getIntExtra("numOfQuestions", 0);
+        for(int i=0; i<numOfQuestions; i++){
             type+="&"+it.getStringExtra(""+i);
         }
     }
