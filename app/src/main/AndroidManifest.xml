@@ -37,6 +37,10 @@
             android:name=".Die"
             android:label="@string/title_activity_die" >
         </activity>
+        <activity
+            android:name=".GoogleMap"
+            android:label="@string/title_activity_google_map" >
+        </activity>
     </application>
 
 </manifest>

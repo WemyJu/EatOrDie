@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,10 +10,11 @@
     android:weightSum="1">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="267dp"
+        android:layout_height="210dp"
         android:id="@+id/imageView5"
-        android:src="@drawable/img314071590" />
+        android:src="@drawable/img314071590"
+        android:layout_gravity="center_horizontal|top" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,12 +23,6 @@
         android:text="衣索比亞小孩都吃不飽了"
         android:id="@+id/textView6"
         android:textSize="25dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView8"
-        android:layout_gravity="right" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="0.5dp"
-        android:padding="0.5dp">
+        android:padding="0.5dp"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="198dp"
