@@ -2,11 +2,13 @@ package com.bubblegray.eatordie;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,18 +26,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 
-public class SelectQuestion extends ActionBarActivity {
-    //View mContentView;
-    View mLoadingView;
-    int mLongDurationAnimation;
+public class SelectQuestion extends ActionBarActivity{
     private TextView mTextView, choice1, choice2;
     int i;
-    ArrayList<String> decisions = new ArrayList<String>();
+    ArrayList<Integer> decisions = new ArrayList<Integer>();
     static String[] foodType={
             "start","正餐","小點心","餓死了","有點飽","下午茶","宵夜"
             ,"甜的","鹹的","米飯","麵食","餃類","關東煮"
@@ -44,6 +44,7 @@ public class SelectQuestion extends ActionBarActivity {
             ,"肉類","蔬菜","牛肉","豬肉","雞肉","鴨肉","鵝肉","魚肉"
     };
     static boolean visited[]= new boolean[40];
+    CountDownTimer CDT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +53,25 @@ public class SelectQuestion extends ActionBarActivity {
 
         mTextView = (TextView) findViewById(R.id.textView11);
         choice1 = (TextView) findViewById(R.id.choice1);
+        choice1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decided(v);
+            }
+        });
         choice2 = (TextView) findViewById(R.id.choice2);
+        choice2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                decided(v);
+            }
+        });
         Arrays.fill(visited, Boolean.TRUE);
         setup();
-        for(i=0; i<5; i++) {
+        //for(i=0; i<5; i++) {
             getQuestionAndSetUI();
-        }
+            Log.e("on creat", "in loop:"+i);
+        //}
     }
 
     @Override
@@ -82,24 +96,34 @@ public class SelectQuestion extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void getQuestionAndSetUI(){
+    void getQuestionAndSetUI() {
         int id = TwoChooseOne();
         choice1.setText(foodType[id]);
-        choice2.setText(foodType[id+1]);
+        choice2.setText(foodType[id + 1]);
 
-        new CountDownTimer(5000,1000){
-            @Override
-            public void onFinish() {
-                // TODO Auto-generated method stub
-                mTextView.setText("0");
+        if (i >= 5) {
+            Collections.sort(decisions);
+            Intent it = new Intent(this, ResultList.class);
+            for(int j=0; j<5; j++) {
+                it.putExtra(j+"", foodType[decisions.get(j)]);
             }
+            startActivity(it);
+        } else {
+            CDT = new CountDownTimer(5000, 500) {
+                @Override
+                public void onFinish() {
+                    // TODO Auto-generated method stub
+                    i++;
+                    getQuestionAndSetUI();
+                }
 
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // TODO Auto-generated method stub
-                mTextView.setText(""+millisUntilFinished/1000);
-            }
-        }.start();
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    // TODO Auto-generated method stub
+                    mTextView.setText((millisUntilFinished / 1000) + 1 + "");
+                }
+            }.start();
+        }
     }
 
 
@@ -135,6 +159,9 @@ public class SelectQuestion extends ActionBarActivity {
 
     public void decided(View v){
         i++;
-        decisions.add((String)((TextView) v).getText());
+        CDT.cancel();
+        decisions.add(Arrays.asList(foodType).indexOf((String)((TextView) v).getText()));
+        getQuestionAndSetUI();
+        Log.e("in decide", "click");
     }
 }
