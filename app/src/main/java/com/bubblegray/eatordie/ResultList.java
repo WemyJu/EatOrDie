@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,19 +19,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class ResultList extends ActionBarActivity {
@@ -44,6 +32,8 @@ public class ResultList extends ActionBarActivity {
     private ListView listView;
     private ArrayAdapter<String> listAdapter;
     private ArrayList<String> arrayList;
+    private ArrayList<String> storeGps;
+    private ArrayList<String> storeAddress;
     private ResultList myself;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +69,16 @@ public class ResultList extends ActionBarActivity {
         url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord;
 
         arrayList = new ArrayList<String>();
+        storeGps = new ArrayList<String>();
+        storeAddress = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(ResultList.this,android.R.layout.simple_list_item_1,arrayList);
         listView.setAdapter(listAdapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                
+            }
+        });
         loadAPI(url);
     }
     public void loadAPI(String address)
@@ -115,9 +112,15 @@ public class ResultList extends ActionBarActivity {
 
                         if(tmp!=null) {
                             int len;
+                            String tmpGps;
                             len = tmp.size();
                             for (int i = 0; i < len; ++i) {
                                 arrayList.add(tmp.get(i).getAsJsonObject().get("name").getAsString());
+                                tmpGps="";
+                                tmpGps=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString();
+                                tmpGps+=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString();
+                                storeGps.add(tmpGps);
+                                storeAddress.add(tmp.get(i).getAsJsonObject().get("vicinity").getAsString());
                             }
 
 
@@ -128,7 +131,6 @@ public class ResultList extends ActionBarActivity {
                             loadAPI(url);
                         }
                         else
-                            // UIHr.post(refreshUI);
                             listAdapter.notifyDataSetChanged();
                     }
                 });
