@@ -63,7 +63,6 @@ public class ResultList extends ActionBarActivity {
 
         //get keyword
         //set keyWord variable
-        url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key/*+"&keyword="+keyWord*/;
 
         listView=(ListView)findViewById(R.id.listView);
         //isOver=false;
@@ -94,6 +93,8 @@ public class ResultList extends ActionBarActivity {
             location = String.format("%.6f,%.6f", l_net.getLatitude(), l_net.getLongitude());
             Log.e("position", location);
         }
+
+        url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord;
 
         arrayList = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(ResultList.this,android.R.layout.simple_list_item_1,arrayList);
@@ -135,7 +136,7 @@ public class ResultList extends ActionBarActivity {
                         }
                         if(!isOver)
                         {
-                            url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key/*+"&keyword="+keyWord*/+"&pagetoken="+nextPage;
+                            url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord+"&pagetoken="+nextPage;
                             loadAPI(url);
                         }
                         else
