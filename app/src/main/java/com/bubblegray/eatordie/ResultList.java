@@ -1,5 +1,6 @@
 package com.bubblegray.eatordie;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class ResultList extends ActionBarActivity {
     private String[] show_text;
     private ArrayAdapter<String> listAdapter;
     private ResultList myself;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,11 @@ public class ResultList extends ActionBarActivity {
         Thread getDataThread = new Thread(getData);
         getDataThread.start();
         myself=this;
+
+        Intent it = getIntent();
+        for(int i=0; i<5; i++){
+            type+="&"+it.getStringExtra(""+i);
+        }
     }
 
     public Runnable refreshUI = new Runnable() {
