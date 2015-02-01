@@ -18,13 +18,18 @@ ALPHA Hackathon - team 12  Bubble Gray
 ###載點：[Eat Or Die](http://wemyju.wix.com/eat-or-die)  
 ###安裝教學：
 1. 於載點頁面點擊"Download Now"按鈕，下載apk檔  
->![setup_step1](http://wemyju.wix.com/eat-or-die)
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step1.jpg">
 2. 將載下來的apk檔移到手機上  
->![setup_step2](http://wemyju.wix.com/eat-or-die)
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step2.jpg">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step3.jpg">
 3. 找到手機上的apk檔，點擊並安裝  
->![setup_step3](http://wemyju.wix.com/eat-or-die)
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step4.jpg">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step5.jpg">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step6.jpg">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step7.jpg">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step8.jpg"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step8_1.jpg">
 4. 執行畫面  
-> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img1.jpg" width="25%" height="25%"><img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img2.jpg" width="25%" height="25%"><img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img3.jpg" width="25%" height="25%"><img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img4.jpg" width="25%" height="25%"><img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img5.jpg" width="25%" height="25%">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img1.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img2.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img3.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img4.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img5.jpg" width="25%" height="25%">
 
 -----------------------------------------------------------------------------
 ####作者群：  
