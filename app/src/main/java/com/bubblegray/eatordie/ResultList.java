@@ -68,12 +68,16 @@ public class ResultList extends ActionBarActivity {
         listAdapter = new SimpleAdapter(ResultList.this,list2,android.R.layout.simple_list_item_2,new String[] { "TITLE", "SUBTITLE" },new int[] { android.R.id.text1, android.R.id.text2 });
 
         listView.setAdapter(listAdapter);
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent it = new Intent(this, ResultList.class);
+                Intent it = new Intent(ResultList.this, GoogleMap.class);
+                it.putExtra("Name",arrayList.get((int)id));
+                it.putExtra("GPS",storeGps.get((int)id));
+                it.putExtra("Address",storeAddress.get((int)id));
+                startActivity(it);
             }
-        });*/
+        });
         if(numOfKeyWord == 0)
         {
             Intent it2=new Intent(this,Die.class);
