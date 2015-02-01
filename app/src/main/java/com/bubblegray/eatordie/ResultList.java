@@ -152,7 +152,7 @@ public class ResultList extends ActionBarActivity {
                                 HashMap<String,String> item = new HashMap<String,String>();
 
                                 item.put("TITLE",tmpName);
-                                item.put("SUBTITLE",countDis(tmpLat,tmpLng));
+                                item.put("SUBTITLE",countDis(tmpLat,tmpLng)+"\n"+tmpAddress);
                                 list2.add(item);
                             }
 
