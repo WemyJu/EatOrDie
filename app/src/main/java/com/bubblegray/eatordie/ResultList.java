@@ -14,12 +14,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ResultList extends ActionBarActivity {
 
@@ -27,14 +29,16 @@ public class ResultList extends ActionBarActivity {
     private String radius = "500";
     private String type = "food";
     private String key = "AIzaSyBbgk2WwE9CC8JIHlJ4_NtLXOTIu7foOVE";
-    private String keyWord="";
     private String url;
     private ListView listView;
-    private ArrayAdapter<String> listAdapter;
+    private SimpleAdapter listAdapter;
     private ArrayList<String> arrayList;
     private ArrayList<String> storeGps;
     private ArrayList<String> storeAddress;
+    private ArrayList<HashMap<String,String>> list2;
     private ResultList myself;
+    private int countNoResult;
+    private  int numOfKeyWord;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,19 +48,8 @@ public class ResultList extends ActionBarActivity {
         myself=this;
 
         Intent it = getIntent();
-        int numOfKeyWord = it.getIntExtra("numOfKeyWord",0);
-        if(numOfKeyWord == 0)
-        {
-            Intent it2=new Intent(this,Die.class);
-            startActivity(it2);
-        }
-        else
-        {
-            for(int i=0; i<numOfKeyWord; ++i)
-            {
-                keyWord+=i==0?it.getStringExtra(""+i):","+it.getStringExtra(""+i);
-            }
-        }
+        numOfKeyWord = it.getIntExtra("numOfKeyWord",0);
+
 
         LocationManager locmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = locmgr.getBestProvider(new Criteria(), true);
@@ -66,22 +59,41 @@ public class ResultList extends ActionBarActivity {
             Log.e("position", location);
         }
 
-        url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord;
 
+
+        list2 = new ArrayList<HashMap<String,String>>();
         arrayList = new ArrayList<String>();
         storeGps = new ArrayList<String>();
         storeAddress = new ArrayList<String>();
-        listAdapter = new ArrayAdapter<String>(ResultList.this,android.R.layout.simple_list_item_1,arrayList);
+        listAdapter = new SimpleAdapter(ResultList.this,list2,android.R.layout.simple_list_item_2,new String[] { "TITLE", "SUBTITLE" },new int[] { android.R.id.text1, android.R.id.text2 });
+
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
+       /*     @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+                Intent it = new Intent(this, ResultList.class);
             }
-        });
-        loadAPI(url);
+        });*/
+        if(numOfKeyWord == 0)
+        {
+            Intent it2=new Intent(this,Die.class);
+            startActivity(it2);
+        }
+        else
+        {
+            String keyWord;
+            countNoResult=0;
+            for(int i=0; i<numOfKeyWord; ++i)
+            {
+                //keyWord+=i==0?it.getStringExtra(""+i):","+it.getStringExtra(""+i);
+                keyWord=it.getStringExtra(""+i);
+                url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord;
+                loadAPI(url,keyWord);
+            }
+        }
+
     }
-    public void loadAPI(String address)
+    public void loadAPI(String address, final String keyWord)
     {
         Log.d("Eat or die","Address: " + address);
         Ion.with(ResultList.this)
@@ -95,9 +107,14 @@ public class ResultList extends ActionBarActivity {
                         boolean isOver=false;
                         if("ZERO_RESULTS".equals(result.get("status").getAsString()))
                         {
-                            Intent it2=new Intent(myself,Die.class);
-                            startActivity(it2);
+
                             isOver=true;
+                            countNoResult++;
+                            if(countNoResult==numOfKeyWord)
+                            {
+                                Intent it2=new Intent(myself,Die.class);
+                                startActivity(it2);
+                            }
                         }
                         if(result.has("next_page_token"))
                         {
@@ -112,15 +129,22 @@ public class ResultList extends ActionBarActivity {
 
                         if(tmp!=null) {
                             int len;
-                            String tmpGps;
+                            String tmpName,tmpGps,tmpAddress;
                             len = tmp.size();
                             for (int i = 0; i < len; ++i) {
-                                arrayList.add(tmp.get(i).getAsJsonObject().get("name").getAsString());
+                                tmpName=tmp.get(i).getAsJsonObject().get("name").getAsString();
+                                arrayList.add(tmpName);
                                 tmpGps="";
                                 tmpGps=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString();
                                 tmpGps+=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString();
                                 storeGps.add(tmpGps);
-                                storeAddress.add(tmp.get(i).getAsJsonObject().get("vicinity").getAsString());
+                                tmpAddress=tmp.get(i).getAsJsonObject().get("vicinity").getAsString();
+                                storeAddress.add(tmpAddress);
+                                HashMap<String,String> item = new HashMap<String,String>();
+
+                                item.put("TITLE",tmpName);
+                                item.put("SUBTITLE",tmpAddress);
+                                list2.add(item);
                             }
 
 
@@ -128,7 +152,7 @@ public class ResultList extends ActionBarActivity {
                         if(!isOver)
                         {
                             url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + location + "&radius=" + radius + "&types=" + type + "&sensor=false&key=" + key+"&keyword="+keyWord+"&pagetoken="+nextPage;
-                            loadAPI(url);
+                            loadAPI(url,keyWord);
                         }
                         else
                             listAdapter.notifyDataSetChanged();
