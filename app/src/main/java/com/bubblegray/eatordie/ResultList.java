@@ -2,12 +2,14 @@ package com.bubblegray.eatordie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +53,7 @@ public class ResultList extends ActionBarActivity {
         Intent it = getIntent();
         numOfKeyWord = it.getIntExtra("numOfKeyWord",0);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         LocationManager locmgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         String provider = locmgr.getBestProvider(new Criteria(), true);
@@ -61,8 +64,6 @@ public class ResultList extends ActionBarActivity {
             location = String.format("%.6f,%.6f", lat_b, lng_b);
             Log.e("position", location);
         }
-
-
 
         list2 = new ArrayList<HashMap<String,String>>();
         arrayList = new ArrayList<String>();
@@ -211,5 +212,15 @@ public class ResultList extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

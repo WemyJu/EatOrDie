@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -23,12 +24,13 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
     }
 
     public void selectOne(View v){
         ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED
-                || conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ) {
+                || conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED ) {
             Intent it = new Intent(this, SelectQuestion.class);
             startActivity(it);
         }

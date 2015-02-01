@@ -2,6 +2,7 @@ package com.bubblegray.eatordie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,6 +29,7 @@ public class Die extends ActionBarActivity {
                 it.addCategory(Intent.CATEGORY_HOME);
                 it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(it);
+                finish();
             }
         });
         choice4 = (TextView) findViewById(R.id.choice4);
@@ -36,8 +38,11 @@ public class Die extends ActionBarActivity {
             public void onClick(View v) {
                 Intent it = new Intent(myContext, SelectQuestion.class);
                 startActivity(it);
+                finish();
             }
         });
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
     }
 
     @Override
@@ -67,6 +72,7 @@ public class Die extends ActionBarActivity {
         if(keyCode == KeyEvent.KEYCODE_BACK){
             Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }

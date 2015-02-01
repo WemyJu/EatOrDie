@@ -1,6 +1,7 @@
 package com.bubblegray.eatordie;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,6 +74,8 @@ public class GoogleMap extends ActionBarActivity implements GoogleApiClient.OnCo
             }
         });
         BuildGoogleApiClient();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
     }
 
     private void DrawMarker() {

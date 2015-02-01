@@ -3,6 +3,7 @@ package com.bubblegray.eatordie;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.CountDownTimer;
@@ -71,6 +72,8 @@ public class SelectQuestion extends ActionBarActivity{
         Arrays.fill(visited, Boolean.TRUE);
         setup();
         getQuestionAndSetUI();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
     }
 
     @Override
@@ -175,6 +178,7 @@ public class SelectQuestion extends ActionBarActivity{
         if(keyCode == KeyEvent.KEYCODE_BACK){
             Intent it = new Intent(this, MainActivity.class);
             startActivity(it);
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }
