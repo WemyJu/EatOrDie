@@ -15,4 +15,7 @@ ALPHA Hackathon - team 12  Bubble Gray
 >在數個round之後，我們將會根據您的作答，為您推薦 **最適合** 您的餐廳  
 
 ----------------------------------------------------------------------------
-###載點：[Eat Or Die](http://wemyju.wix.com/eat-or-die)
+###載點：[Eat Or Die](http://wemyju.wix.com/eat-or-die)  
+###安裝教學：
+1. 於載點頁面點擊"Download Now"按鈕，下載apk檔  
+>![setup_step1](http://wemyju.wix.com/eat-or-die)
