@@ -39,6 +39,7 @@ public class ResultList extends ActionBarActivity {
     private ResultList myself;
     private int countNoResult;
     private  int numOfKeyWord;
+    private double lat_b,lng_b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,9 @@ public class ResultList extends ActionBarActivity {
         String provider = locmgr.getBestProvider(new Criteria(), true);
         if(provider != null) {
             Location l_net = locmgr.getLastKnownLocation(provider);
-            location = String.format("%.6f,%.6f", l_net.getLatitude(), l_net.getLongitude());
+            lat_b=l_net.getLatitude();
+            lng_b=l_net.getLongitude();
+            location = String.format("%.6f,%.6f", lat_b, lng_b);
             Log.e("position", location);
         }
 
@@ -133,21 +136,23 @@ public class ResultList extends ActionBarActivity {
 
                         if(tmp!=null) {
                             int len;
-                            String tmpName,tmpGps,tmpAddress;
+                            String tmpName,tmpLat,tmpLng,tmpGps,tmpAddress;
                             len = tmp.size();
                             for (int i = 0; i < len; ++i) {
                                 tmpName=tmp.get(i).getAsJsonObject().get("name").getAsString();
                                 arrayList.add(tmpName);
-                                tmpGps="";
-                                tmpGps=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString();
-                                tmpGps+=","+tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString();
+
+                                tmpLat=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lat").getAsString();
+                                tmpLng=tmp.get(i).getAsJsonObject().get("geometry").getAsJsonObject().get("location").getAsJsonObject().get("lng").getAsString();
+                                tmpGps=tmpLat+","+tmpLng;
+
                                 storeGps.add(tmpGps);
                                 tmpAddress=tmp.get(i).getAsJsonObject().get("vicinity").getAsString();
                                 storeAddress.add(tmpAddress);
                                 HashMap<String,String> item = new HashMap<String,String>();
 
                                 item.put("TITLE",tmpName);
-                                item.put("SUBTITLE",tmpAddress);
+                                item.put("SUBTITLE",countDis(tmpLat,tmpLng));
                                 list2.add(item);
                             }
 
@@ -164,6 +169,28 @@ public class ResultList extends ActionBarActivity {
                 });
     }
 
+    private final double EARTH_RADIUS = 6378137.0;
+    private String countDis(String lat,String lng)
+    {
+        String dis="距離 ";
+        double lat_a=Double.parseDouble(lat);
+        double lng_a=Double.parseDouble(lng);
+
+        double radLat1 = (lat_a * Math.PI / 180.0);
+        double radLat2 = (lat_b * Math.PI / 180.0);
+        double a = radLat1 - radLat2;
+        double b = (lng_a - lng_b) * Math.PI / 180.0;
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
+                + Math.cos(radLat1) * Math.cos(radLat2)
+                * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000.0;
+
+        dis+=String.format("%.3f", s);
+
+        dis+=" 公尺";
+        return dis;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
