@@ -32,7 +32,7 @@ ALPHA Hackathon - team 12  Bubble Gray
 <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step8.jpg"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/setup_step8_1.jpg">  
 
 4. 執行畫面  
-<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img1.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img2.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img3.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img4.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img5.jpg" width="25%" height="25%">
+<img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img1.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img2.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img3.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img4.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img5.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img6.jpg" width="25%" height="25%"> <img src="https://github.com/zeroplusone/EatOrDie/blob/master/image/game_img7.jpg" width="25%" height="25%">
 
 -----------------------------------------------------------------------------
 ####作者群：  
