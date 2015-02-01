@@ -68,8 +68,8 @@ public class ResultList extends ActionBarActivity {
         listAdapter = new SimpleAdapter(ResultList.this,list2,android.R.layout.simple_list_item_2,new String[] { "TITLE", "SUBTITLE" },new int[] { android.R.id.text1, android.R.id.text2 });
 
         listView.setAdapter(listAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-       /*     @Override
+       /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent it = new Intent(this, ResultList.class);
             }
