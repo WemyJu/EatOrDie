@@ -1,17 +1,28 @@
 package com.bubblegray.eatordie;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class GoogleMap extends ActionBarActivity {
 
+    private TextView tv;
+    private String name,gps,address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
+
+        Intent it = getIntent();
+        name=it.getStringExtra("Name");
+        gps = it.getStringExtra("GPS");
+        address=it.getStringExtra("Address");
+        tv=(TextView)findViewById(R.id.tvTest);
+        tv.setText(gps);
     }
 
 
