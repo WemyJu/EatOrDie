@@ -100,7 +100,7 @@ public class SelectQuestion extends ActionBarActivity{
             Intent it = new Intent(this, ResultList.class);
             int numOfKeyWord = decisions.size();
             for(int j=0; j<decisions.size(); j++) {
-                if(j>=1 && j<=6){
+                if(decisions.get(j)>=1 && decisions.get(j)<=4){
                     numOfKeyWord--;
                 }
                 else {
