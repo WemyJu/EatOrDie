@@ -11,12 +11,27 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        releaseConfig {
+            storeFile file ("../EATORDIE.jks")
+            storePassword "eatordie"
+            keyAlias "EatOrDie"
+            keyPassword "eatordie"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.releaseConfig
+        }
         release {
+            signingConfig signingConfigs.releaseConfig
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {

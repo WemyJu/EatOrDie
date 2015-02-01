@@ -1,17 +1,92 @@
 package com.bubblegray.eatordie;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class GoogleMap extends ActionBarActivity {
+
+public class GoogleMap extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
+
+    private String name,gps,address;
+    com.google.android.gms.maps.GoogleMap mMap;
+    LatLng location;
+    GoogleApiClient mGoogleApiClient;
+
+    void BuildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
+
+        Intent it = getIntent();
+        name=it.getStringExtra("Name");
+        gps = it.getStringExtra("GPS");
+        address = it.getStringExtra("Address");
+        int pos = gps.indexOf(",");
+        Log.e("pos:", pos+"");
+        String latitude = gps.substring(0, pos);
+        String longtitude = gps.substring(pos + 1);
+        Log.e("gps:", gps);
+
+        Log.e(latitude, longtitude);
+        location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longtitude));
+
+
+        ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(com.google.android.gms.maps.GoogleMap googleMap) {
+                mMap = googleMap;
+                mMap.setMapType(com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL);     //better appearence of map
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.getUiSettings().setMapToolbarEnabled(true);
+                mMap.getUiSettings().setCompassEnabled(true);       //set compass
+                mMap.getUiSettings().setRotateGesturesEnabled(true);
+                MoveToLocation(location);
+                DrawMarker();
+            }
+        });
+        BuildGoogleApiClient();
+    }
+
+    private void DrawMarker() {
+        Marker marker = mMap.addMarker(new MarkerOptions()
+                .position(location)
+                .title(name));
+               // .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
+    }
+
+    private void MoveToLocation(LatLng location) {
+        if (mMap != null) {
+            CameraUpdate update = CameraUpdateFactory.newLatLngZoom(location, 17);
+            mMap.moveCamera(update);
+        }
     }
 
 
@@ -35,5 +110,20 @@ public class GoogleMap extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }
