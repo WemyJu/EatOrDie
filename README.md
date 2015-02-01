@@ -19,3 +19,15 @@ ALPHA Hackathon - team 12  Bubble Gray
 ###安裝教學：
 1. 於載點頁面點擊"Download Now"按鈕，下載apk檔  
 >![setup_step1](http://wemyju.wix.com/eat-or-die)
+2. 將載下來的apk檔移到手機上  
+>![setup_step2](http://wemyju.wix.com/eat-or-die)
+3. 找到手機上的apk檔，點擊並安裝  
+>![setup_step3](http://wemyju.wix.com/eat-or-die)
+4. 執行畫面  
+>![play_imgae](http://wemyju.wix.com/eat-or-die)
+
+-----------------------------------------------------------------------------
+####作者群：  
+ - Wemy Ju  WemyJu@gmail.com  
+ - Chia-Ying Lin  a711186@gmail.com  
+ - Mon Mon  aj211y@gmail.com  
