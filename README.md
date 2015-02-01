@@ -24,7 +24,7 @@ ALPHA Hackathon - team 12  Bubble Gray
 3. 找到手機上的apk檔，點擊並安裝  
 >![setup_step3](http://wemyju.wix.com/eat-or-die)
 4. 執行畫面  
->![play_imgae](http://wemyju.wix.com/eat-or-die)
+><img src="https://github.com/zeroplusone/EatOrDie/image/game_img1.jpg" width="50%" height="50%">
 
 -----------------------------------------------------------------------------
 ####作者群：  
