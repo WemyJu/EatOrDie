@@ -1,9 +1,17 @@
 package com.bubblegray.eatordie;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +26,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void selectOne(View v){
-        Intent it = new Intent(this, SelectQuestion.class);
-        startActivity(it);
+        ConnectivityManager conMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED
+                || conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ) {
+            Intent it = new Intent(this, SelectQuestion.class);
+            startActivity(it);
+        }
+        else if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED
+                || conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED) {
+            AlertDialog.Builder bdr = new AlertDialog.Builder(this);
+            bdr.setMessage("Please connect to Internet.")
+                    .setTitle("Need setting")
+                    .setIcon(android.R.drawable.ic_menu_info_details)
+                    .setCancelable(true)
+                    .setPositiveButton("Confirm", null)
+                    .show();
+        }
     }
 
     @Override

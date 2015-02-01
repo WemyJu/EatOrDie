@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -167,5 +168,14 @@ public class SelectQuestion extends ActionBarActivity{
         CDT.cancel();
         decisions.add(Arrays.asList(foodType).indexOf((String) ((TextView) v).getText()));
         getQuestionAndSetUI();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent it = new Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
